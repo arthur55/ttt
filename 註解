@@ -1,0 +1,49 @@
+import random
+
+
+def get_int(msg, minimum, default):
+    while True:
+        try:
+			#判斷rows跟columns的數量、minimun的值
+            line = input(msg)
+			#若目前user輸入到minimum，且未輸入內容則直接回傳minimum的default
+            if not line and default is not None:
+                return default
+            i = int(line)
+			#rows、columns的值需>rows和columns的minimum，minimun的最小值需>=minimum的minimum
+            if i < minimum:
+                print("must be >=", minimum)
+            else:
+                return i
+        except ValueError as err:
+            print(err)
+
+
+rows = get_int("rows: ", 1, None)
+columns = get_int("columns: ", 1, None)
+minimum = get_int("minimum (or Enter for 0): ", -1000000, 0)
+
+#讓maximun的最小值>minimum，若max<min則讓max的default變成兩倍的min
+default = 1000
+if default < minimum:
+    default = 2 * minimum
+maximum = get_int("maximum (or Enter for " + str(default) + "): ",
+                  minimum, default)
+
+row = 0
+#讓rows在print的時候不會超出user輸入的值
+while row < rows:
+    line = ""
+    column = 0
+	#讓columns在print的時候不會超出user輸入的值
+    while column < columns:
+	#i=minimum至maximum間的隨機值
+        i = random.randint(minimum, maximum)
+		#在每個print出來的數值補滿空格至十字元
+        s = str(i)
+        while len(s) < 10:
+            s = " " + s
+        line += s
+        column += 1
+    print(line)
+    row += 1
